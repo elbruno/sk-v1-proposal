@@ -10,24 +10,32 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 
 public sealed class RunCode
 {
-    [SKFunction, Description("Build and run C# code")]
-    public async Task<string> BuildAndRun(
-        [Description("The base C# code to build and run"), SKName("code")] string codeToRun)
+    [SKFunction, Description("CodeRun")]
+    public async Task<string> CodeRun(
+        [Description("The base C# code to run"), SKName("code")] string codeToRun)
     {
+        var result = "OK";
         var options = ScriptOptions.Default
             .AddReferences(typeof(object).Assembly)
             .AddReferences(typeof(TelloSharp.Tello).Assembly)
             .AddImports("System", "System.IO", "System.Text", "System.Text.RegularExpressions");
 
+        // convert the code to run to a valid string in unicode
+        codeToRun = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(codeToRun));
+
         try
         {
             Console.WriteLine("===============================");
+            Console.WriteLine("Code to run");
+            Console.WriteLine("  ");
+            Console.WriteLine(codeToRun);
+            Console.WriteLine("  ");
+            Console.WriteLine("===============================");
+
+            Console.WriteLine("===============================");
             Console.WriteLine("Start running code ...");
-            Console.WriteLine("===============================");
+            Console.WriteLine("");
             var t = await CSharpScript.RunAsync(codeToRun, options);
-            
-            Console.WriteLine("Script Return Value: " + t.ReturnValue.ToString());
-            Console.WriteLine("===============================");
             Console.WriteLine("Running code done");
             Console.WriteLine("===============================");
         }
@@ -36,26 +44,25 @@ public sealed class RunCode
             Console.WriteLine("===============================");
             Console.WriteLine("Compilation Error");
             Console.WriteLine("===============================");
-            Console.WriteLine(codeToRun);
 
             var sb = new StringBuilder();
             foreach (var err in ex.Diagnostics)
                 sb.AppendLine(err.ToString());
-
-            Console.WriteLine(sb.ToString());
+            result = sb.ToString();
+            Console.WriteLine(result);
             Console.WriteLine("===============================");
         }
-        // Runtime Errors
         catch (Exception ex)
         {
+            // Runtime Errors
+            result = ex.ToString();
             Console.WriteLine("===============================");
-            Console.WriteLine("General Exception");
+            Console.WriteLine("Run time exception");
             Console.WriteLine("===============================");
-            Console.WriteLine(codeToRun);
-            Console.WriteLine(ex.ToString());
+            Console.WriteLine(result);
             Console.WriteLine("===============================");
-        }       
+        }
 
-        return "Done";
+        return result;
     }
 }

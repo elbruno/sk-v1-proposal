@@ -12,7 +12,6 @@ template: |
     // --------------------------
     // Section connect to drone
     // --------------------------
-    bool Connected = false;
     Tello tello = new();
     tello.Connect();
 
@@ -20,13 +19,14 @@ template: |
     // Section validate connection
     // --------------------------
     Console.WriteLine("Start Connection");
-    // loop that check if the drone is connected and wait 1 second until check again
     int i = 0;
-    while (!Connected || i != 10)
+    while (tello._connectionState != Tello.ConnectionState.Connected)
     {
-        Console.WriteLine("Connecting...");
+        Console.WriteLine("Connecting ... " + i);
         System.Threading.Thread.Sleep(1000);
-        i++;
+        i++;        
+        if (i == 100)
+            break;
     }
 
     // --------------------------
@@ -122,9 +122,6 @@ input_variables:
     description: The amount of time to wait between commands
     default_value: 3
     is_required: false
-output_variable:
-    type: string
-    description: The code generated.
 execution_settings:
   - model_id_pattern: ^gpt-4
   - model_id_pattern: ^gpt-3\.?5-turbo

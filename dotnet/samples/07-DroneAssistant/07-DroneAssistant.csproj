@@ -45,6 +45,7 @@
 
 	<ItemGroup>
 	  <None Remove="Assistants\DroneCodeGenerator.agent.yaml" />
+	  <None Remove="Assistants\DronePilot.agent.yaml" />
 	</ItemGroup>
 
 </Project>

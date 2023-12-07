@@ -27,7 +27,7 @@ template: |
     [CODE END]
 
     Generate python code only to follow these orders.
-    Add a 5 seconds delay between commands.
+    Add a {{delay}} seconds delay between commands.
 
     {{drone_flight_plan}}
     }</message>
@@ -38,6 +38,14 @@ input_variables:
     type: string
     description: The drone actions to perform 
     is_required: true
+  - name: delay
+    type: string
+    description: The amount of time to wait between commands
+    default_value: 3
+    is_required: false
+output_variable:
+    type: string
+    description: The code generated.
 execution_settings:
   - model_id_pattern: ^gpt-4
   - model_id_pattern: ^gpt-3\.?5-turbo

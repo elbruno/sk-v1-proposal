@@ -54,7 +54,7 @@ while (keepRunning)
     if (userInput != null)
     {
         // validate if the user wants to exit
-        if (userInput.ToLower() == "exit")
+        if (userInput.ToLower() == "exit" || string.IsNullOrEmpty(userInput.ToLower()))
         {
             keepRunning = false;
             continue;
@@ -62,8 +62,10 @@ while (keepRunning)
 
         // validate if uyser ipunt is "d"
         if (userInput.ToLower() == "d")
+        {
             userInput = "generate a flight plan for a drone with the following actions: takeoff the drone, move forward 25 centimeters, flip right, move down 30 centimeters and land";
-
+            Console.WriteLine("def user input > " + userInput);
+        }
 
         _ = thread.AddUserMessageAsync(userInput);
 

@@ -1,7 +1,5 @@
-﻿
-using Microsoft.SemanticKernel.AI.ChatCompletion;
+﻿using Microsoft.SemanticKernel.AI.ChatCompletion;
 using Microsoft.SemanticKernel.Handlebars;
-using System.Runtime.CompilerServices;
 
 string OpenAIApiKey = Env.Var("OpenAI:ApiKey")!;
 string BingApiKey = Env.Var("Bing:ApiKey")!;
@@ -25,13 +23,13 @@ IPlugin researcher = AssistantKernel.FromConfiguration(
 Plugin openAIChatCompletionDrone = new Plugin(
     name: "Drone",
     functions: new() {
-        SemanticFunction.GetFunctionFromYaml(currentDirectory + "/Plugins/TelloDrone/TelloDrone.prompt.yaml")
+        SemanticFunction.GetFunctionFromYaml(currentDirectory + "/Plugins/TelloDrone/TelloDroneCS.prompt.yaml")
     }
 );
 
 // Create a drone code generator agent
 IPlugin droneCodeGen = AssistantKernel.FromConfiguration(
-    currentDirectory + "/Assistants/DroneCodeGenerator.agent.yaml",
+    currentDirectory + "/Assistants/DroneCodeGeneratorCS.agent.yaml",
     aiServices: new() { gpt35Turbo },
     plugins: new() { openAIChatCompletionDrone }
 );
@@ -51,32 +49,30 @@ while (keepRunning)
     // Get user input
     Console.Write("User > ");
     string userInput = Console.ReadLine();
-    if (userInput != null)
+
+    // validate if the user wants to exit
+    if (string.IsNullOrEmpty(userInput.ToLower()) || userInput.ToLower() == "exit")
     {
-        // validate if the user wants to exit
-        if (userInput.ToLower() == "exit" || string.IsNullOrEmpty(userInput.ToLower()))
-        {
-            keepRunning = false;
-            continue;
-        }
+        keepRunning = false;
+        continue;
+    }
 
-        // validate if uyser ipunt is "d"
-        if (userInput.ToLower() == "d")
-        {
-            userInput = "generate a flight plan for a drone with the following actions: takeoff the drone, move forward 25 centimeters, flip right, move down 30 centimeters and land";
-            Console.WriteLine("def user input > " + userInput);
-        }
+    // validate if uyser ipunt is "d"
+    if (userInput.ToLower() == "d")
+    {
+        userInput = "generate a flight plan for a drone with the following actions: takeoff the drone, move forward 25 centimeters, flip right, move down 30 centimeters and land";
+        Console.WriteLine("def user input > " + userInput);
+    }
 
-        _ = thread.AddUserMessageAsync(userInput);
+    _ = thread.AddUserMessageAsync(userInput);
 
-        // Run the thread using the project manager kernel
-        var result = await projectManager.RunAsync(thread);
+    // Run the thread using the project manager kernel
+    var result = await projectManager.RunAsync(thread);
 
-        // Print the results
-        var messages = result.GetValue<List<ModelMessage>>();
-        foreach (ModelMessage message in messages)
-        {
-            Console.WriteLine("Project Manager > " + message);
-        }
+    // Print the results
+    var messages = result.GetValue<List<ModelMessage>>();
+    foreach (ModelMessage message in messages)
+    {
+        Console.WriteLine("Project Manager > " + message);
     }
 }

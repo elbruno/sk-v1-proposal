@@ -11,8 +11,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Handlebars.Net" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
 		<PackageReference Include="Microsoft.SemanticKernel" />
 		<PackageReference Include="Microsoft.SemanticKernel.Plugins.Web" />
+		<PackageReference Include="System.CodeDom" />
 		<PackageReference Include="YamlDotNet" />
 	</ItemGroup>
 
@@ -25,6 +28,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="../../src/extensions/SKHandlebars/SKHandlebars.csproj" />
+		<ProjectReference Include="..\99-TelloDrone\Tello\TelloSharp.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

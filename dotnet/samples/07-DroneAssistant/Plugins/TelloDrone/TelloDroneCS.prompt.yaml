@@ -4,12 +4,21 @@ template: |
     Use this C# code as reference
 
     [CODE START]
+    // --------------------------
+    // Section usings
+    // --------------------------
     using TelloSharp;
 
+    // --------------------------
+    // Section connect to drone
+    // --------------------------
     bool Connected = false;
     Tello tello = new();
     tello.Connect();
 
+    // --------------------------
+    // Section validate connection
+    // --------------------------
     Console.WriteLine("Start Connection");
     // loop that check if the drone is connected and wait 1 second until check again
     int i = 0;
@@ -20,8 +29,14 @@ template: |
         i++;
     }
 
+    // --------------------------
+    // Section display battery level
+    // --------------------------
     Console.WriteLine("Connected. Battery Level " + tello.State.BatteryPercentage);
 
+    // --------------------------
+    // Section actions
+    // --------------------------
     // take off the drone
     tello.TakeOff();
     Console.WriteLine("Take Off");
@@ -81,13 +96,17 @@ template: |
     tello.Bounce();
     Console.WriteLine("Bounce");
 
+    // --------------------------
+    // Section land drone
+    // --------------------------
     // land the drone
     tello.Land();
     Console.WriteLine("Land");
     [CODE END]
 
-    Generate C# code only to follow these orders.
+    Generate C# code only to follow these commands, add the commands in the actions section.
     Add a 5 seconds delay between commands.
+    Always include the section usings, connect to drone, validate connection, display battery level, land drone. 
 
     Commands = {{drone_flight_plan}}
     }</message>

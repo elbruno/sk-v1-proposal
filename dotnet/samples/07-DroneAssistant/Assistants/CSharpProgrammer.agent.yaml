@@ -1,0 +1,7 @@
+name: CSharpProgrammer
+template: |
+  You are a C# programmer that build and executes C# Code.
+description: a C# programmer that build and executes C# Code
+execution_settings:
+  - model_id_pattern: ^gpt-4
+  - model_id_pattern: ^gpt-3\.?5-turbo

@@ -8,6 +8,10 @@ string currentDirectory = Directory.GetCurrentDirectory();
 // Initialize the required functions and services for the kernel
 IChatCompletion gpt35Turbo = new OpenAIChatCompletion("gpt-3.5-turbo-1106", OpenAIApiKey);
 
+// ---------------------------------------------------
+// RESEARCHER
+// ---------------------------------------------------
+
 IPlugin searchPlugin = new Plugin(
     name: "Search",
     functions: NativeFunction.GetFunctionsFromObject(new Search(BingApiKey))
@@ -20,6 +24,9 @@ IPlugin researcher = AssistantKernel.FromConfiguration(
     plugins: new() { searchPlugin }
 );
 
+// ---------------------------------------------------
+// DRONE CODE GENERATOR
+// ---------------------------------------------------
 Plugin openAIChatCompletionDrone = new Plugin(
     name: "Drone",
     functions: new() {
@@ -27,11 +34,26 @@ Plugin openAIChatCompletionDrone = new Plugin(
     }
 );
 
-// Create a drone code generator agent
+// Create a drone code generator assistant
 IPlugin droneCodeGen = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/DroneCodeGeneratorCS.agent.yaml",
     aiServices: new() { gpt35Turbo },
     plugins: new() { openAIChatCompletionDrone }
+);
+
+// ---------------------------------------------------
+// C# PROGRAMMER
+// ---------------------------------------------------
+IPlugin csharpCodeManagerPlugin = new Plugin(
+    name: "CodeBuildAndRun",
+    functions: NativeFunction.GetFunctionsFromObject(new RunCode())
+);
+
+// Create a programmer assistant
+IPlugin csProgrammer = AssistantKernel.FromConfiguration(
+    currentDirectory + "/Assistants/CSharpProgrammer.agent.yaml",
+    aiServices: new() { gpt35Turbo },
+    plugins: new() { csharpCodeManagerPlugin }
 );
 
 
@@ -39,7 +61,7 @@ IPlugin droneCodeGen = AssistantKernel.FromConfiguration(
 AssistantKernel projectManager = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/ProjectManager.agent.yaml",
     aiServices: new() { gpt35Turbo },
-    plugins: new() { researcher, droneCodeGen }
+    plugins: new() { researcher, droneCodeGen, csProgrammer }
 );
 
 IThread thread = await projectManager.CreateThreadAsync();
@@ -61,6 +83,13 @@ while (keepRunning)
     if (userInput.ToLower() == "d")
     {
         userInput = "generate a flight plan for a drone with the following actions: takeoff the drone, move forward 25 centimeters, flip right, move down 30 centimeters and land";
+        Console.WriteLine("def user input > " + userInput);
+    }
+
+    // validate if uyser ipunt is "c"
+    if (userInput.ToLower() == "c")
+    {
+        userInput = @"run this C# code: Console.WriteLine(""Hello World! :D"");";
         Console.WriteLine("def user input > " + userInput);
     }
 

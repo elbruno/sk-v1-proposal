@@ -1,0 +1,11 @@
+name: GenerateDroneFlightPlan
+template: <message role="user">{{generate_drone_flight_plan}}</message>
+template_format: handlebars
+description: A function that generates C# code for a drone to fly a mission
+input_variables:
+  - name: generate_drone_flight_plan
+    type: string
+    description: The drone actions to perform 
+    is_required: true
+execution_settings:
+  - model_id_pattern: ^wizard-math

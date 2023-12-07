@@ -1,0 +1,30 @@
+Use this python code as reference 
+
+[CODE START]
+# display battery level
+sendReadCommand('battery?')
+print(f'Battery: {battery} %')
+
+# take off
+sendCommand("takeoff") 
+
+# flip the drone left
+sendCommand("flip l") 
+
+# move drone up 5 cms
+sendCommand("up 5") 
+
+# move drone left 5 cms
+sendCommand("left 5") 
+
+# rotate drone clock wise 90 degrees
+sendCommand("cw 90") 
+
+# land the drone
+sendCommand("land")
+[CODE END]
+
+Generate python code only to follow these orders.
+Add a 5 seconds delay between commands.
+{{$input}}
++++++

@@ -34,6 +34,13 @@
 		<Content Include="Plugins\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Skills\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Assistants\DroneCodeGenerator.agent.yaml" />
 	</ItemGroup>
 
 </Project>

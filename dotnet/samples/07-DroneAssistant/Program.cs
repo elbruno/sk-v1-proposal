@@ -9,32 +9,17 @@ string currentDirectory = Directory.GetCurrentDirectory();
 
 // Initialize the required functions and services for the kernel
 IChatCompletion gpt35Turbo = new OpenAIChatCompletion("gpt-3.5-turbo-1106", OpenAIApiKey);
-OllamaGeneration ollamaGeneration = new("wizard-math");
 
-// Create plugins
-IPlugin mathPlugin = new Plugin(
-    name: "Math",
-    functions: NativeFunction.GetFunctionsFromObject(new Math())
+IPlugin searchPlugin = new Plugin(
+    name: "Search",
+    functions: NativeFunction.GetFunctionsFromObject(new Search(BingApiKey))
 );
 
-
-//IPlugin searchPlugin = new Plugin(
-//    name: "Search",
-//    functions: NativeFunction.GetFunctionsFromObject(new Search(BingApiKey))
-//);
-
-//// Create a researcher
-//IPlugin researcher = AssistantKernel.FromConfiguration(
-//    currentDirectory + "/Assistants/Researcher.agent.yaml",
-//    aiServices: new () { gpt35Turbo, },
-//    plugins: new () { searchPlugin }
-//);
-
-// Create a mathmatician
-IPlugin mathmatician = AssistantKernel.FromConfiguration(
-    currentDirectory + "/Assistants/Mathmatician.agent.yaml",
-    aiServices: new() { gpt35Turbo, ollamaGeneration },
-    plugins: new() { mathPlugin }
+// Create a researcher
+IPlugin researcher = AssistantKernel.FromConfiguration(
+    currentDirectory + "/Assistants/Researcher.agent.yaml",
+    aiServices: new() { gpt35Turbo, },
+    plugins: new() { searchPlugin }
 );
 
 Plugin openAIChatCompletionDrone = new Plugin(
@@ -44,10 +29,10 @@ Plugin openAIChatCompletionDrone = new Plugin(
     }
 );
 
-// Create a mathmatician
+// Create a drone code generator agent
 IPlugin droneCodeGen = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/DroneCodeGenerator.agent.yaml",
-    aiServices: new() { gpt35Turbo, ollamaGeneration },
+    aiServices: new() { gpt35Turbo },
     plugins: new() { openAIChatCompletionDrone }
 );
 
@@ -56,7 +41,7 @@ IPlugin droneCodeGen = AssistantKernel.FromConfiguration(
 AssistantKernel projectManager = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/ProjectManager.agent.yaml",
     aiServices: new() { gpt35Turbo },
-    plugins: new() { mathmatician, droneCodeGen }
+    plugins: new() { researcher, droneCodeGen }
 );
 
 IThread thread = await projectManager.CreateThreadAsync();

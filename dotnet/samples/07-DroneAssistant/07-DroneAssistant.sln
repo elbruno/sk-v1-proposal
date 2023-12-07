@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKHandleBars", "..\..\src\extensions\SKHandleBars\SKHandleBars.csproj", "{D05F484F-F3EC-4389-8146-FD053770AFFE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "07-DroneAssistant", "07-DroneAssistant.csproj", "{F58E2588-44A9-4737-9A5A-DA615B143204}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D05F484F-F3EC-4389-8146-FD053770AFFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D05F484F-F3EC-4389-8146-FD053770AFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D05F484F-F3EC-4389-8146-FD053770AFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D05F484F-F3EC-4389-8146-FD053770AFFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58E2588-44A9-4737-9A5A-DA615B143204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58E2588-44A9-4737-9A5A-DA615B143204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58E2588-44A9-4737-9A5A-DA615B143204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58E2588-44A9-4737-9A5A-DA615B143204}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18A36EB6-78FA-4706-8233-FD0545873FBB}
+	EndGlobalSection
+EndGlobal

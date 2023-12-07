@@ -1,11 +1,43 @@
 name: GenerateDroneFlightPlan
-template: <message role="user">{{generate_drone_flight_plan}}</message>
+template: |
+    <message role="user">{
+    Use this python code as reference
+
+    [CODE START]
+    # display battery level
+    sendReadCommand('battery?')
+
+    # take off
+    sendCommand("takeoff") 
+
+    # flip the drone left
+    sendCommand("flip l") 
+
+    # move drone up 5 cms
+    sendCommand("up 5") 
+
+    # move drone left 5 cms
+    sendCommand("left 5") 
+
+    # rotate drone clock wise 90 degrees
+    sendCommand("cw 90") 
+
+    # land the drone
+    sendCommand("land")
+    [CODE END]
+
+    Generate python code only to follow these orders.
+    Add a 5 seconds delay between commands.
+
+    {{drone_flight_plan}}
+    }</message>
 template_format: handlebars
-description: A function that generates C# code for a drone to fly a mission
+description: A function that generates Python code for a drone to fly a mission
 input_variables:
-  - name: generate_drone_flight_plan
+  - name: drone_flight_plan
     type: string
     description: The drone actions to perform 
     is_required: true
 execution_settings:
-  - model_id_pattern: ^wizard-math
+  - model_id_pattern: ^gpt-4
+  - model_id_pattern: ^gpt-3\.?5-turbo

@@ -17,13 +17,6 @@ IPlugin mathPlugin = new Plugin(
     functions: NativeFunction.GetFunctionsFromObject(new Math())
 );
 
-Plugin ollamaGenerationPlugin = new Plugin(
-    name: "Math",
-    functions: new() {
-        SemanticFunction.GetFunctionFromYaml(currentDirectory + "/Plugins/Ollama/Math.prompt.yaml")
-    }
-);
-
 
 //IPlugin searchPlugin = new Plugin(
 //    name: "Search",
@@ -44,7 +37,7 @@ IPlugin mathmatician = AssistantKernel.FromConfiguration(
     plugins: new() { mathPlugin }
 );
 
-Plugin ollamaGenerationPluginDrone = new Plugin(
+Plugin openAIChatCompletionDrone = new Plugin(
     name: "Drone",
     functions: new() {
         SemanticFunction.GetFunctionFromYaml(currentDirectory + "/Plugins/TelloDrone/TelloDrone.prompt.yaml")
@@ -55,7 +48,7 @@ Plugin ollamaGenerationPluginDrone = new Plugin(
 IPlugin droneCodeGen = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/DroneCodeGenerator.agent.yaml",
     aiServices: new() { gpt35Turbo, ollamaGeneration },
-    plugins: new() { ollamaGenerationPluginDrone }
+    plugins: new() { openAIChatCompletionDrone }
 );
 
 

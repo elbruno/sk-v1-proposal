@@ -40,6 +40,7 @@ public sealed class RunCode
             Console.WriteLine(">> Start running code ...");
             Console.WriteLine("");
             var t = await CSharpScript.RunAsync(codeToRun, options);
+            Console.WriteLine("");
             Console.WriteLine("Running code done");
             Console.WriteLine("===============================");
         }

@@ -7,6 +7,7 @@ string currentDirectory = Directory.GetCurrentDirectory();
 
 // Initialize the required functions and services for the kernel
 IChatCompletion gpt35Turbo = new OpenAIChatCompletion("gpt-3.5-turbo-1106", OpenAIApiKey);
+IChatCompletion gpt4Turbo = new OpenAIChatCompletion("gpt-4-1106-preview", OpenAIApiKey);
 
 // ---------------------------------------------------
 // RESEARCHER
@@ -46,14 +47,14 @@ IPlugin csharpCodeManagerPlugin = new Plugin(
 // Create a drone pilot assistant
 IPlugin dronePilot = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/DronePilot.agent.yaml",
-    aiServices: new() { gpt35Turbo },
+    aiServices: new() { gpt4Turbo },
     plugins: new() { openAIChatCompletionDrone, csharpCodeManagerPlugin }
 );
 
 // Create a Project Manager
 AssistantKernel projectManager = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/ProjectManager.agent.yaml",
-    aiServices: new() { gpt35Turbo },
+    aiServices: new() { gpt4Turbo },
     plugins: new() { researcher, dronePilot } 
 ) ;
 

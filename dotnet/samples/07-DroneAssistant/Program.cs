@@ -25,7 +25,7 @@ IPlugin researcher = AssistantKernel.FromConfiguration(
 );
 
 // ---------------------------------------------------
-// DRONE CODE GENERATOR
+// DRONE CODE GENERATOR and C# PROGRAMMER Plugins
 // ---------------------------------------------------
 Plugin openAIChatCompletionDrone = new Plugin(
     name: "DroneCodeGenerator",
@@ -34,30 +34,13 @@ Plugin openAIChatCompletionDrone = new Plugin(
     }
 );
 
-//// Create a drone code generator assistant
-//IPlugin droneCodeGen = AssistantKernel.FromConfiguration(
-//    currentDirectory + "/Assistants/DroneCodeGeneratorCS.agent.yaml",
-//    aiServices: new() { gpt35Turbo },
-//    plugins: new() { openAIChatCompletionDrone }
-//);
-
-// ---------------------------------------------------
-// C# PROGRAMMER
-// ---------------------------------------------------
 IPlugin csharpCodeManagerPlugin = new Plugin(
     name: "CodeRun",
     functions: NativeFunction.GetFunctionsFromObject(new RunCode())
 );
 
-//// Create a programmer assistant
-//IPlugin csProgrammer = AssistantKernel.FromConfiguration(
-//    currentDirectory + "/Assistants/CSharpProgrammer.agent.yaml",
-//    aiServices: new() { gpt35Turbo },
-//    plugins: new() { csharpCodeManagerPlugin }
-//);
-
 // ---------------------------------------------------
-// DRONE PILOT
+// DRONE PILOT Assistant
 // ---------------------------------------------------
 
 // Create a drone pilot assistant
@@ -71,8 +54,9 @@ IPlugin dronePilot = AssistantKernel.FromConfiguration(
 AssistantKernel projectManager = AssistantKernel.FromConfiguration(
     currentDirectory + "/Assistants/ProjectManager.agent.yaml",
     aiServices: new() { gpt35Turbo },
-    plugins: new() { researcher, dronePilot } //droneCodeGen, csProgrammer }
+    plugins: new() { researcher, dronePilot } 
 ) ;
+
 
 IThread thread = await projectManager.CreateThreadAsync();
 bool keepRunning = true;
@@ -89,32 +73,20 @@ while (keepRunning)
         continue;
     }
 
-    // validate if user ipunt is "d"
-    if (userInput.ToLower() == "d")
+    // create a switch statement for userInput.ToLower()
+    switch (userInput.ToLower())
     {
-        userInput = "Generate C# code for a drone with the following actions: takeoff the drone, move forward 25 centimeters, flip right, move down 30 centimeters and land. Do not run the code after generated.";
-        Console.WriteLine("def user input > " + userInput);
-    }
-
-    // validate if user ipunt is "c"
-    if (userInput.ToLower() == "c")
-    {
-        userInput = @"run this code: ConsoleASD.WriteLine(""Hello World! :D""); :D";
-        Console.WriteLine("def user input > " + userInput);
-    }
-
-    // validate if user ipunt is "e"
-    if (userInput.ToLower() == "e")
-    {
-        userInput = "Generate C# code for a drone with the following actions: takeoff the drone, move forward 25 centimeters, flip right, move down 30 centimeters and land. And then run the generated code.";
-        Console.WriteLine("def user input > " + userInput);
-    }
-
-    // validate if user ipunt is "f"
-    if (userInput.ToLower() == "f")
-    {
-        userInput = "send the drone the following actions: takeoff the drone, move forward 25 centimeters and land";
-
+        case "d1":
+            userInput = "send the drone the following actions: takeoff the drone, move forward 25 centimeters and land";
+            break;
+        case "d2":
+            userInput = "send the drone the following actions: takeoff, move left 20 cms and land";
+            break;
+        case "d3":
+            userInput = @"run the following code: Console.WriteLine(""Go Drone!"");";
+            break;
+        default:
+            break;
     }
 
     Console.WriteLine("Processing user input : " + userInput);

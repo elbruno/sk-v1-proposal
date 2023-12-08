@@ -1,8 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-
 using System.ComponentModel;
 using System.Text;
-using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
@@ -23,17 +20,24 @@ public sealed class RunCode
         // convert the code to run to a valid string in unicode
         codeToRun = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(codeToRun));
 
+        // validate that the code to run is not empty
+        if (string.IsNullOrEmpty(codeToRun))
+        {
+            result = "Error: Code to run is empty";
+            return result;
+        }
+
         try
         {
             Console.WriteLine("===============================");
-            Console.WriteLine("Code to run");
+            Console.WriteLine(">> Code to run");
             Console.WriteLine("  ");
             Console.WriteLine(codeToRun);
             Console.WriteLine("  ");
             Console.WriteLine("===============================");
-
+            Console.WriteLine("  ");
             Console.WriteLine("===============================");
-            Console.WriteLine("Start running code ...");
+            Console.WriteLine(">> Start running code ...");
             Console.WriteLine("");
             var t = await CSharpScript.RunAsync(codeToRun, options);
             Console.WriteLine("Running code done");
@@ -42,7 +46,7 @@ public sealed class RunCode
         catch (CompilationErrorException ex)
         {
             Console.WriteLine("===============================");
-            Console.WriteLine("Compilation Error");
+            Console.WriteLine(">> Compilation Error");
             Console.WriteLine("===============================");
 
             var sb = new StringBuilder();
@@ -57,7 +61,7 @@ public sealed class RunCode
             // Runtime Errors
             result = ex.ToString();
             Console.WriteLine("===============================");
-            Console.WriteLine("Run time exception");
+            Console.WriteLine(">> Run time exception");
             Console.WriteLine("===============================");
             Console.WriteLine(result);
             Console.WriteLine("===============================");
